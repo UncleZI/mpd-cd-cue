@@ -42,6 +42,19 @@ input {
 }
 ```
 
+The full config section should be like that:
+
+```conf
+input {
+    plugin "cdio_paranoia"
+    default_byte_order "little_endian"
+    speed "2"
+    mode "overlap"
+    skip "no"
+}
+```
+Check config reference at [MPD Input Plugins](https://mpd.readthedocs.io/en/stable/plugins.html#cdio-paranoia) page.
+
 Also ensure the `mpd` user has permission to read the optical drive (usually via the `optical` group):
 
 ```bash
