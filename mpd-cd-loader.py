@@ -112,31 +112,26 @@ def run_cmd(cmd, timeout=15):
 
 def get_toc_info(device: str):
     """Query track count and Media Catalog Number (MCN) using cdparanoia."""
-try:
-        with tempfile.TemporaryDirectory(prefix="mpdcd_") as tmpdir:
-            res = subprocess.run(
-                ["cdda2wav", "-J", "-T", "-D", device, "-t", "1+", "-v", "!trackid"],
-                capture_output=True,
-                text=True,
-                timeout=15,
-                cwd=tmpdir,
-            )
-    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
-        logging.warning("cdda2wav execution failed: %s", e)
-        return None
+    rc, out, err = run_cmd(["cdparanoia", "-d", device, "-sQ"], timeout=10)
+    combined = out + "\n" + err
+    tracks = re.findall(r"^\s+(\d+)\.\s+(\d+)\s+\[", combined, re.MULTILINE)
+    if rc != 0 or not tracks:
+        return 0, None
 
-    combined = res.stdout + "\n" + res.stderr
-    if res.returncode != 0 or "CD-Text: detected" not in combined:
-        return None    
+    mcn_match = re.search(r"Media Catalog Number:\s*(\S+)", combined, re.IGNORECASE)
+    mcn = mcn_match.group(1) if mcn_match else None
+    return len(tracks), mcn
+
+
 def get_cdtext_metadata(device: str, track_count: int):
     """Attempt to read embedded CD-Text metadata using cdda2wav."""
     with tempfile.TemporaryDirectory(prefix="mpdcd_") as tmpdir:
-    res = subprocess.run(
+    rc, out, err = subprocess.run(
         ["cdda2wav", "-J", "-T", "-D", device, "-t", "1+", "-v", "!trackid"],
         capture_output=True,
         text=True,
         timeout=15,
-        cwd=tmpdir,
+        cwd=tmpdir,  # Все .inf и .cddb создадутся здесь и сразу удалятся!
     )
     combined = out + "\n" + err
     if rc != 0 or "CD-Text: detected" not in combined:
