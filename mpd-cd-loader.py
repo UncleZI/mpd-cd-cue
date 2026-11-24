@@ -125,18 +125,23 @@ def get_toc_info(device: str):
 
 def get_cdtext_metadata(device: str, track_count: int):
     """Attempt to read embedded CD-Text metadata using cdda2wav."""
-    with tempfile.TemporaryDirectory(prefix="mpdcd_") as tmpdir:
-    rc, out, err = subprocess.run(
-        ["cdda2wav", "-J", "-T", "-D", device, "-t", "1+", "-v", "!trackid"],
-        capture_output=True,
-        text=True,
-        timeout=15,
-        cwd=tmpdir,  # Все .inf и .cddb создадутся здесь и сразу удалятся!
-    )
-    combined = out + "\n" + err
-    if rc != 0 or "CD-Text: detected" not in combined:
+    try:
+        with tempfile.TemporaryDirectory(prefix="mpdcd_") as tmpdir:
+            res = subprocess.run(
+                ["cdda2wav", "-J", "-T", "-D", device, "-t", "1+", "-v", "!trackid"],
+                capture_output=True,
+                text=True,
+                timeout=15,
+                cwd=tmpdir,
+            )
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        logging.warning("cdda2wav execution failed: %s", e)
         return None
 
+    combined = res.stdout + "\n" + res.stderr
+    if res.returncode != 0 or "CD-Text: detected" not in combined:
+        return None
+        
     logging.info("CD-Text detected, parsing...")
     album = ""
     album_artist = ""
