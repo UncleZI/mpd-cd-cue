@@ -16,6 +16,7 @@ import sqlite3
 import subprocess
 import sys
 import time
+import tempfile
 import urllib.error
 import urllib.request
 from contextlib import contextmanager
@@ -124,9 +125,13 @@ def get_toc_info(device: str):
 
 def get_cdtext_metadata(device: str, track_count: int):
     """Attempt to read embedded CD-Text metadata using cdda2wav."""
-    rc, out, err = run_cmd(
+    with tempfile.TemporaryDirectory(prefix="mpdcd_") as tmpdir:
+    res = subprocess.run(
         ["cdda2wav", "-J", "-T", "-D", device, "-t", "1+", "-v", "!trackid"],
+        capture_output=True,
+        text=True,
         timeout=15,
+        cwd=tmpdir,
     )
     combined = out + "\n" + err
     if rc != 0 or "CD-Text: detected" not in combined:
