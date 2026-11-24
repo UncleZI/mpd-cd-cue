@@ -65,7 +65,7 @@ port = 6600
 mpd_playlist_path = CD/Audio-CD.cue
 
 [musicbrainz]
-user_agent = mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue.git)
+user_agent = mpd-cd-cue/1.0 (https://github.com/UncleZI/mpd-cd-cue)
 ```
 
 ## Manual Testing & Debugging
