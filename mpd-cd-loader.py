@@ -445,7 +445,11 @@ def main():
 
     track_count, mcn = get_toc_info(cfg["device"])
     if track_count == 0:
-        logging.info("No Audio CD detected in %s", cfg["device"])
+        logging.info("No Audio CD detected in %s, cleaning up old playlist", cfg["device"])
+        cue_path = Path(cfg["playlist_dir"]) / cfg["playlist_name"]
+        if cue_path.exists():
+            cue_path.unlink()
+            mpc_cmd(cfg, "update", "--wait")
         sys.exit(0)
 
     logging.info("Detected Audio CD with %d tracks", track_count)
