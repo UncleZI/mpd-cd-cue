@@ -24,4 +24,4 @@ mpd_playlist_path = CD/Audio-CD.cue
 
 [musicbrainz]
 # Custom User-Agent required by MusicBrainz API guidelines
-user_agent = mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue)
+user_agent = mpd-cd-cue/1.0 (https://github.com/UncleZI/mpd-cd-cue)
