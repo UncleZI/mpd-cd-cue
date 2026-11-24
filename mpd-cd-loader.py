@@ -141,7 +141,7 @@ def get_cdtext_metadata(device: str, track_count: int):
     combined = res.stdout + "\n" + res.stderr
     if res.returncode != 0 or "CD-Text: detected" not in combined:
         return None
-        
+
     logging.info("CD-Text detected, parsing...")
     album = ""
     album_artist = ""
