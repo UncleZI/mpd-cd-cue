@@ -36,7 +36,7 @@ DEFAULT_CONFIG = {
     "host": "localhost",
     "port": "6600",
     "mpd_playlist_path": "CD/Audio-CD.cue",
-    "user_agent": "mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue)",
+    "user_agent": "mpd-cd-cue/1.0 (https://github.com/UncleZI/mpd-cd-cue)",
 }
 
 LOCK_PATH = "/var/lock/mpd-cd-loader.lock"
