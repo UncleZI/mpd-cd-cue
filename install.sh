@@ -83,7 +83,7 @@ port = $MPD_PORT
 mpd_playlist_path = $MPD_REL_PATH
 
 [musicbrainz]
-user_agent = mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue)
+user_agent = mpd-cd-cue/1.0 (https://github.com/UncleZI/mpd-cd-cue)
 EOF
 chmod 644 /etc/mpdcd.conf
 
