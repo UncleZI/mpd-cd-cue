@@ -25,7 +25,7 @@ Insert an Audio CD into your optical drive, and `mpd-cd-cue` will automatically 
 ### Arch Linux Installation
 
 ```bash
-git clone https://github.com/yourusername/mpd-cd-cue.git
+git clone https://github.com/UncleZI/mpd-cd-cue
 cd mpd-cd-cue
 sudo ./install.sh
 ```
@@ -65,7 +65,7 @@ port = 6600
 mpd_playlist_path = CD/Audio-CD.cue
 
 [musicbrainz]
-user_agent = mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue)
+user_agent = mpd-cd-cue/1.0 (https://github.com/yourusername/mpd-cd-cue.git)
 ```
 
 ## Manual Testing & Debugging
